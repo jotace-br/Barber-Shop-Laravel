@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\JWTAuthController;
+use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -16,7 +17,7 @@ use App\Http\Controllers\JWTAuthController;
 */
 
 Route::group([
-    'middleware' => 'api',
+    'middleware' => 'auth:api',
     'prefix' => 'auth'
 ], function ($router) {
     Route::post('register', [JWTAuthController::class, 'register']);
@@ -24,4 +25,17 @@ Route::group([
     Route::post('logout', [JWTAuthController::class, 'logout']);
     Route::post('refresh', [JWTAuthController::class, 'refresh']);
     Route::get('profile', [JWTAuthController::class, 'profile']);
+});
+
+Route::group([
+    'middleware' => 'auth:api',
+    'prefix' => 'user'
+], function ($router) {
+    Route::get('index', [UserController::class, 'index']);
+    Route::get('indexPendences', [UserController::class, 'indexPendences']);
+    Route::get('getEmail/{id}', [UserController::class, 'getEmail']);
+    Route::get('listEmails/{sectorId}', [UserController::class, 'listEmails']);
+    Route::post('uploadImage', [UserController::class, 'uploadImage']);
+    Route::put('update/{id}', [UserController::class, 'updateUser']);
+    Route::delete('delete/{id}', [UserController::class, 'deleteUser']);
 });

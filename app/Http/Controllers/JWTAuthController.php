@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
-use Validator;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\User;
 
@@ -27,24 +27,33 @@ class JWTAuthController extends Controller
      */
     public function register(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|between:2,100',
-            'email' => 'required|email|unique:users|max:50',
-            'password' => 'required|confirmed|string|min:6',
-            'surname' => 'required|between:2,100',
-            'birth_date' => 'required',
-            'whatsapp' => 'required|between:2,100',
-        ]);
 
-        $user = User::create(array_merge(
+        try {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|between:2,100',
+                'email' => 'required|email|unique:users|max:50',
+                'password' => 'required|confirmed|string|min:6',
+                'surname' => 'required|between:2,100',
+                'birth_date' => 'required',
+                'whatsapp' => 'required|between:2,100',
+            ]);
+
+            if ($validator->fails()) {
+                return response($validator->errors(), 422);
+            } else {
+                $user = User::create(array_merge(
                     $validator->validated(),
                     ['password' => bcrypt($request->password)]
                 ));
 
-        return response()->json([
-            'message' => 'Successfully registered',
-            'user' => $user
-        ], 201);
+                return response()->json([
+                    'message' => 'Successfully registered',
+                    'user' => $user
+                ], 201);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 401);
+        }
     }
 
     /**
@@ -54,20 +63,33 @@ class JWTAuthController extends Controller
      */
     public function login(Request $request)
     {
-    	$validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'password' => 'required|string|min:6',
-        ]);
+        try {
+            $validator = Validator::make($request->all(), [
+                'email' => 'required|email',
+                'password' => 'required|string|min:6',
+            ]);
 
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
+            if ($validator->fails()) {
+                return response()->json($validator->errors(), 422);
+            } else {
+                $user = User::where('email', '=', $request->email)->first();
+                if ($user === null) {
+                    return response()->json(['error' => 'Usuário não existente em nossa plataforma.'], 404);
+                }
+
+                if ($user->status === 0) {
+                    return response()->json(['error' => 'Conta desativada. Verifique com o RH.'], 401);
+                }
+
+                if (!$token = auth()->attempt($validator->validated())) {
+                    return response()->json(['error' => 'Unauthorized'], 401);
+                }
+
+                return $this->createNewToken($token);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 401);
         }
-
-        if (! $token = auth()->attempt($validator->validated())) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
-
-        return $this->createNewToken($token);
     }
 
     /**
