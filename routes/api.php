@@ -17,14 +17,20 @@ use App\Http\Controllers\UserController;
 */
 
 Route::group([
-    'middleware' => 'auth:api',
+    'middleware' => 'api',
     'prefix' => 'auth'
 ], function ($router) {
     Route::post('register', [JWTAuthController::class, 'register']);
     Route::post('login', [JWTAuthController::class, 'login']);
+});
+
+Route::group([
+    'middleware' => 'auth:api',
+    'prefix' => 'auth'
+], function ($router) {
+    Route::get('profile', [JWTAuthController::class, 'profile']);
     Route::post('logout', [JWTAuthController::class, 'logout']);
     Route::post('refresh', [JWTAuthController::class, 'refresh']);
-    Route::get('profile', [JWTAuthController::class, 'profile']);
 });
 
 Route::group([
