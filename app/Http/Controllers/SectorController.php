@@ -18,7 +18,10 @@ class SectorController extends Controller
         try {
             $sector = Sector::orderby('created_at', 'asc')->get();
 
-            return response()->json(['result' => $sector, 'message' => 'Todos os setores foram exibidos com sucesso.'], 202);
+            return response()->json([
+                'result' => $sector,
+                'message' => 'Todos os setores foram exibidos com sucesso.'
+            ], 202);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 401);
         }
@@ -68,8 +71,8 @@ class SectorController extends Controller
   public function register(Request $request) {
     try {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|between:2,100',
-            'is_company' => 'boolean',
+            'name' => 'required|string|between:2,100',
+            'is_company' => 'nullable|boolean',
         ]);
 
         if ($validator->fails()) {
@@ -81,8 +84,8 @@ class SectorController extends Controller
 
         return response()->json([
           'result' => $sector,
-          'message' => 'Registrado com Sucesso.'
-        ], 200);
+          'message' => 'Setor criado com sucesso.'
+        ], 202);
 
     } catch (\Exception $e) {
       return response()->json(['error' => $e->getMessage()], 401);

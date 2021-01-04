@@ -32,7 +32,7 @@ class UserTypeController extends Controller
   public function register(Request $request) {
     try {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|between:2,100',
+            'name' => 'required|string|between:2,100',
         ]);
 
         if ($validator->fails()) {

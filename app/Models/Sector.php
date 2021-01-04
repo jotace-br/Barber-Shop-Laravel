@@ -19,6 +19,7 @@ class Sector extends Model
         'is_company'
     ];
 
+    protected $guarded = ['id'];
     /**
      * The attributes that should be hidden for arrays.
      *

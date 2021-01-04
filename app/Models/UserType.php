@@ -18,6 +18,7 @@ class UserType extends Model
         'name',
     ];
 
+    protected $guarded = ['id'];
     /**
      * The attributes that should be hidden for arrays.
      *

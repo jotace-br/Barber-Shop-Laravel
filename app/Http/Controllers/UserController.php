@@ -61,7 +61,7 @@ class UserController extends Controller
                     return $q;
                 }
             ])
-            ->orderby('created_at', 'desc')
+            ->orderby('created_at', 'asc')
             ->get();
 
             return response()->json([
