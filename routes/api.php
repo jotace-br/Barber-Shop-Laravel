@@ -29,8 +29,8 @@ Route::group([
     'prefix' => 'auth'
 ], function ($router) {
     Route::get('profile', [JWTAuthController::class, 'profile']);
-    Route::post('logout', [JWTAuthController::class, 'logout']);
     Route::post('refresh', [JWTAuthController::class, 'refresh']);
+    Route::post('logout', [JWTAuthController::class, 'logout']);
 });
 
 Route::group([
