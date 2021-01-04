@@ -36,7 +36,10 @@ class UserController extends Controller
                 $imageName = time() . '.' . $request->image->extension();
                 $request->image->move(public_path('/images/profiles'), $imageName);
 
-                return response()->json(['result' => 'images/profiles/' . $imageName, 'message' => 'Imagem salva com sucesso.'], 201);
+                return response()->json([
+                    'result' => 'images/profiles/' . $imageName,
+                    'message' => 'Imagem salva com sucesso.'
+                ], 201);
             }
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 401);
@@ -51,9 +54,20 @@ class UserController extends Controller
     public function index()
     {
         try {
-            $user = User::orderby('created_at', 'desc')->get();
+            $user = User::with([
+                'fk_user_type' => function ($q) {
+                    return $q;
+                }, 'fk_user_sector' => function ($q) {
+                    return $q;
+                }
+            ])
+            ->orderby('created_at', 'desc')
+            ->get();
 
-            return response()->json(['result' => $user, 'message' => 'Todos os usuários foram exibidos com sucesso.'], 202);
+            return response()->json([
+                'result' => $user,
+                'message' => 'Todos os usuários foram exibidos com sucesso.'
+            ], 202);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 401);
         }
@@ -69,7 +83,10 @@ class UserController extends Controller
         try {
             $user = User::orderby('created_at', 'desc')->where('status', '=', 0)->get();
 
-            return response()->json(['result' => $user, 'message' => 'Todos os usuários foram exibidos com sucesso.'], 202);
+            return response()->json([
+                'result' => $user,
+                'message' => 'Todos os usuários foram exibidos com sucesso.'
+            ], 202);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 401);
         }
@@ -85,7 +102,10 @@ class UserController extends Controller
         try {
             $user = User::where('id', $id)->first();
 
-            return response()->json(['result' => $user->email, 'message' => 'E-mail capturado com sucesso.'], 202);
+            return response()->json([
+                'result' => $user->email,
+                'message' => 'E-mail capturado com sucesso.'
+            ], 202);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 401);
         }
@@ -106,7 +126,10 @@ class UserController extends Controller
                 array_push($array, json_encode(array('email' => $value->email)));
             }
 
-            return response()->json(['result' => $array, 'message' => 'E-mails do setor selecionado exibidos com sucesso.'], 202);
+            return response()->json([
+                'result' => $array,
+                'message' => 'E-mails do setor selecionado exibidos com sucesso.'
+            ], 202);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 401);
         }
@@ -130,7 +153,10 @@ class UserController extends Controller
 
             $user->update($request->all());
 
-            return response()->json(['result' => $user, 'message' => 'Usuário atualizado com sucesso.'], 202);
+            return response()->json([
+                'result' => $user,
+                'message' => 'Usuário atualizado com sucesso.'
+            ], 202);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 401);
         }
@@ -147,7 +173,9 @@ class UserController extends Controller
         try {
             $user = User::find($id)->delete();
 
-            return response()->json(['message' => 'Usuário apagado com sucesso.'], 200);
+            return response()->json([
+                'message' => 'Usuário apagado com sucesso.'
+            ], 200);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 401);
         }
