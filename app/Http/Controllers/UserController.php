@@ -81,7 +81,16 @@ class UserController extends Controller
     public function indexPendences()
     {
         try {
-            $user = User::orderby('created_at', 'desc')->where('status', '=', 0)->get();
+            $user = User::with([
+                'fk_user_type' => function ($q) {
+                    return $q;
+                }, 'fk_user_sector' => function ($q) {
+                    return $q;
+                }
+            ])
+            ->orderby('created_at', 'desc')
+            ->where('status', '=', 0)
+            ->get();
 
             return response()->json([
                 'result' => $user,
