@@ -23,30 +23,20 @@ class UserController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'profileImage' => 'image|mimes:jpeg,png,jpg|max:2048',
+                'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             ], [
-                'profileImage.max' => 'A imagem deve ser menor que 2GB.',
-                'profileImage.mimes' => 'Os formatos aceitos são: jpeg, png e jpg.',
-                'profileImage.image' => 'Só imagens são aceitas.'
+                'image.max' => 'A imagem deve ser menor que 2GB.',
+                'image.mimes' => 'Os formatos aceitos são: jpeg, png e jpg.',
+                'image.image' => 'Só imagens são aceitas.'
             ]);
 
             if ($validator->fails()) {
                 return response($validator->errors(), 422);
             } else {
-                $image = $request->perfilImage;
-                $input['imagename'] = time() . '.' . $image->getClientOriginalExtension();  // Difine nome da imagem
+                $imageName = time() . '.' . $request->image->extension();
+                $request->image->move(public_path('/images/profiles'), $imageName);
 
-                // Escolhe pasta de destino e gera imagem
-                $destinationPath = public_path('/images/profiles');
-                $img = Image::make($image->getRealPath());
-
-                // Compressão digital para diminuir o peso das imagens
-                $img->resize(300, 250, function ($constraint) {
-                    $constraint->aspectRatio();
-                })->save($destinationPath . '/' . $input['imagename']);
-
-                // retorna o caminho da imagem
-                return response()->json(['result' => 'images/profiles/' . $input['imagename'], 'message' => 'Imagem salva com sucesso.'], 201);
+                return response()->json(['result' => 'images/profiles/' . $imageName, 'message' => 'Imagem salva com sucesso.'], 201);
             }
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 401);
