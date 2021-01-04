@@ -7,7 +7,7 @@ use App\Http\Controllers\JWTAuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SectorController;
 use App\Http\Controllers\UserTypeController;
-
+use App\Http\Controllers\MeetingController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -69,4 +69,15 @@ Route::group(
     Route::post('register', [UserTypeController::class, 'register']);
     Route::put('update/{id}', [UserTypeController::class, 'update']);
     Route::delete('delete/{id}', [UserTypeController::class, 'delete']);
+});
+
+Route::group(
+    ['middleware' => 'auth:api',
+    'prefix' => 'meeting'
+], function ($router) {
+    Route::get('index', [MeetingController::class, 'index']);
+    Route::get('mySector/{sectorID}', [MeetingController::class, 'getMySector']);
+    Route::post('register', [MeetingController::class, 'register']);
+    Route::put('update/{id}', [MeetingController::class, 'update']);
+    Route::delete('delete/{id}', [MeetingController::class, 'delete']);
 });
