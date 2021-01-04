@@ -157,7 +157,7 @@ class UserController extends Controller
         try {
             $user = User::find($id)->delete();
 
-            return response()->json(['message' => 'Apagado com Sucesso'], 200);
+            return response()->json(['message' => 'Usuário apagado com sucesso.'], 200);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 401);
         }
