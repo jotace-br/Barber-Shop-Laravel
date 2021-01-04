@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\JWTAuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SectorController;
+use App\Http\Controllers\UserTypeController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -44,4 +47,26 @@ Route::group([
     Route::post('uploadImage', [UserController::class, 'uploadImage']);
     Route::put('update/{id}', [UserController::class, 'updateUser']);
     Route::delete('delete/{id}', [UserController::class, 'deleteUser']);
+});
+
+Route::group([
+    'middleware' => 'auth:api',
+    'prefix' => 'sector'
+], function ($router) {
+    Route::get('index', [SectorController::class, 'index']);
+    Route::get('getName/{id}', [SectorController::class, 'getNameById']);
+    Route::get('getCompanies', [SectorController::class, 'getOnlyCompanies']);
+    Route::post('register', [SectorController::class, 'register']);
+    Route::put('update/{id}', [SectorController::class, 'update']);
+    Route::delete('delete/{id}', [SectorController::class, 'delete']);
+});
+
+Route::group(
+    ['middleware' => 'auth:api',
+    'prefix' => 'userType'
+], function ($router) {
+    Route::get('index', [UserTypeController::class, 'index']);
+    Route::post('register', [UserTypeController::class, 'register']);
+    Route::put('update/{id}', [UserTypeController::class, 'update']);
+    Route::delete('delete/{id}', [UserTypeController::class, 'delete']);
 });
