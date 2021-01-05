@@ -11,6 +11,9 @@ use App\Http\Controllers\SectorController;
 use App\Http\Controllers\UserTypeController;
 use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\PurchaseRequestController;
+use App\Http\Controllers\AnnouncementController;
+
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -93,4 +96,17 @@ Route::group(
     Route::post('register', [PurchaseRequestController::class, 'register']);
     Route::put('update/{id}', [PurchaseRequestController::class, 'update']);
     Route::delete('delete/{id}', [PurchaseRequestController::class, 'delete']);
+});
+
+Route::group(
+    ['middleware' => 'auth:api',
+    'prefix' => 'announcement'
+], function ($router) {
+    Route::get('index', [AnnouncementController::class, 'index']);
+    Route::get('indexOnlyFive', [AnnouncementController::class, 'indexLastFiveOnes']);
+    Route::get('indexOnlyPublic', [AnnouncementController::class, 'indexPublicAnnouncements']);
+    Route::get('indexByLoggedUserSector', [AnnouncementController::class, 'indexOnlyMySectorAnnouncements']);
+    Route::post('register', [AnnouncementController::class, 'register']);
+    Route::put('update/{id}', [AnnouncementController::class, 'update']);
+    Route::delete('delete/{id}', [AnnouncementController::class, 'delete']);
 });
