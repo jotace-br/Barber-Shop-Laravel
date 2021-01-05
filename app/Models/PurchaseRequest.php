@@ -27,21 +27,21 @@ class PurchaseRequest extends Model
         'quantity'
     ];
 
-      protected $guarded = ['id'];
+    protected $guarded = ['id'];
 
-      /**
+    /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
      */
-      protected $hidden = [
-        'created_at',
-        'updated_at'
-      ];
+    protected $hidden = [
+      'created_at',
+      'updated_at'
+    ];
 
       protected $table = 'purchase_requests';
 
-      public function fk_user() {
+    public function fk_user() {
         return $this->hasOne('App\Models\UserType', 'id', 'fk_user');
     }
 

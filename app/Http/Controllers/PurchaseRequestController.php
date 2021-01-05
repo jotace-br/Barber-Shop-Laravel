@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Auth;
 use App\Models\PurchaseRequest;
 use Illuminate\Http\Request;
 
@@ -71,7 +70,7 @@ class PurchaseRequestController extends Controller
 
             return response()->json([
                 'result' => $purchaseRequest,
-                'message' => 'Registrado com Sucesso'
+                'message' => 'Requerimento de compra registrado com sucesso.'
             ], 202);
 
           } catch (\Exception $e) {
