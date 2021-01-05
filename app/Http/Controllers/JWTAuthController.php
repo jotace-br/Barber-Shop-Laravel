@@ -78,15 +78,21 @@ class JWTAuthController extends Controller
             } else {
                 $user = User::where('email', '=', $request->email)->first();
                 if ($user === null) {
-                    return response()->json(['error' => 'Usuário não existente em nossa plataforma.'], 404);
+                    return response()->json([
+                        'error' => 'Usuário não existente em nossa plataforma.'
+                    ], 404);
                 }
 
                 if ($user->status === 0) {
-                    return response()->json(['error' => 'Conta desativada. Verifique com o RH.'], 401);
+                    return response()->json([
+                        'error' => 'Conta desativada. Verifique com o RH.'
+                    ], 401);
                 }
 
                 if (!$token = auth()->attempt($validator->validated())) {
-                    return response()->json(['error' => 'Unauthorized'], 401);
+                    return response()->json([
+                        'error' => 'Unauthorized'
+                    ], 401);
                 }
 
                 return $this->createNewToken($token);

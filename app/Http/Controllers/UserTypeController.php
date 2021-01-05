@@ -18,7 +18,10 @@ class UserTypeController extends Controller
         try {
             $userType = UserType::orderby('created_at', 'asc')->get();
 
-            return response()->json(['result' => $userType, 'message' => 'Todos os tipo de usuários foram exibidos com sucesso.'], 202);
+            return response()->json([
+                'result' => $userType,
+                'message' => 'Todos os tipo de usuários foram exibidos com sucesso.'
+            ], 202);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 401);
         }
