@@ -10,6 +10,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\SectorController;
 use App\Http\Controllers\UserTypeController;
 use App\Http\Controllers\MeetingController;
+use App\Http\Controllers\PurchaseRequestController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -82,4 +83,14 @@ Route::group(
     Route::post('register', [MeetingController::class, 'register']);
     Route::put('update/{id}', [MeetingController::class, 'update']);
     Route::delete('delete/{id}', [MeetingController::class, 'delete']);
+});
+
+Route::group(
+    ['middleware' => 'auth:api',
+    'prefix' => 'purchaseRequest'
+], function ($router) {
+    Route::get('index', [PurchaseRequestController::class, 'index']);
+    Route::post('register', [PurchaseRequestController::class, 'register']);
+    Route::put('update/{id}', [PurchaseRequestController::class, 'update']);
+    Route::delete('delete/{id}', [PurchaseRequestController::class, 'delete']);
 });
