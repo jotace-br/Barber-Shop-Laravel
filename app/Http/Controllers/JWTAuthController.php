@@ -39,16 +39,10 @@ class JWTAuthController extends Controller
             ]);
 
             if ($validator->fails()) {
-                return response($validator->errors(), 422);
+                return response()->json([
+                    'message' => $validator->errors(),
+                ], 422);
             } else {
-                $user = User::where('email', '=', $request->email)->first();
-
-                if ($user !== null) {
-                    return response()->json([
-                        'error' => 'Usuário já existente em nossa plataforma.'
-                    ], 409);
-                }
-
                 $user = User::create(array_merge(
                     $validator->validated(),
                     ['password' => bcrypt($request->password)]
