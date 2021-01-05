@@ -43,7 +43,7 @@ class JWTAuthController extends Controller
             } else {
                 $user = User::where('email', '=', $request->email)->first();
 
-                if ($user === null) {
+                if ($user !== null) {
                     return response()->json([
                         'error' => 'Usuário já existente em nossa plataforma.'
                     ], 409);
