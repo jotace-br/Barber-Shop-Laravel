@@ -33,9 +33,9 @@ public function index()
             'result' => $events,
             'message' => 'Todos os eventos foram exibidos com sucesso.'
         ], 202);
-        } catch (\Exception $e) {
+    } catch (\Exception $e) {
         return response()->json(['error' => $e->getMessage()], 401);
-        }
+    }
 }
 
     /**
@@ -52,7 +52,7 @@ public function index()
                 'auditory' => 'required|string|between:2,100',
                 'event_type' => 'required|string|between:2,100',
                 'description' => 'required|string|between:2,5000',
-                'people_quantity' => 'required|numeric',
+                'people_quantity' => 'required|numeric|min:1',
                 'status' => 'nullable|numeric',
                 'fk_user' => 'nullable|numeric',
                 'fk_sector' => 'nullable|numeric',
@@ -87,7 +87,7 @@ public function index()
 
             return response()->json([
                 'result' => $event,
-                'message' => 'Registrado com Sucesso'
+                'message' => 'Evento registrado com sucesso.'
             ], 202);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 401);
@@ -109,7 +109,7 @@ public function index()
 
             return response()->json([
                 'result' => $event,
-                'message' => 'Atualizado com Sucesso'
+                'message' => 'Evento atualizado com sucesso.'
             ], 202);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 401);
@@ -128,7 +128,7 @@ public function index()
             $event = Event::find($id)->delete();
 
             return response()->json([
-                'message' => 'Apagado com Sucesso'
+                'message' => 'Evento apagado com sucesso.'
             ], 200);
             } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 401);
