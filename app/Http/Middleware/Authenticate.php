@@ -15,7 +15,7 @@ class Authenticate extends Middleware
     protected function redirectTo($request)
     {
         if (!$request->expectsJson()) {
-            return dd('Authorization Token not found. Please login again. 401');
+            return dd('Unauthenticated.');
         }
     }
 }
