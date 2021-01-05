@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 use App\Models\User;
 
-use Intervention\Image\ImageManagerStatic as Image;
+use Image;
 
 class UserController extends Controller
 {
@@ -31,10 +31,19 @@ class UserController extends Controller
             ]);
 
             if ($validator->fails()) {
-                return response($validator->errors(), 422);
+                return response()->json([
+                    'message' => $validator->errors()->first(),
+                ], 422);
             } else {
-                $imageName = time() . '.' . $request->image->extension();
-                $request->image->move(public_path('/images/profiles'), $imageName);
+                $image = $request->image;
+                $imageName = time() . '.' . $image->extension();
+
+                $destinationPath = public_path('/images/profiles');
+                $resize_image = Image::make($image->getRealPath());
+
+                $resize_image->resize(300, 250, function ($constraint) {
+                    $constraint->aspectRatio();
+                })->save($destinationPath.'/'.$imageName);
 
                 return response()->json([
                     'result' => 'images/profiles/' . $imageName,
