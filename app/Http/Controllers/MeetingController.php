@@ -94,7 +94,9 @@ class MeetingController extends Controller
     //     $this->doDelete($value);
     //   }
     if ($validator->fails()) {
-        return response($validator->errors(), 422);
+        return response()->json([
+            'message' => $validator->errors()->first(),
+        ], 422);
     } else {
         $meeting = Meeting::create(array_merge(
             $validator->validated()));

@@ -36,7 +36,9 @@ class UserTypeController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response($validator->errors(), 422);
+            return response()->json([
+                'message' => $validator->errors()->first(),
+            ], 422);
         } else {
             $userType = UserType::create(array_merge(
                 $validator->validated()));

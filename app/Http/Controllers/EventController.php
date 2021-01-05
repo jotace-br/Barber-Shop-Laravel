@@ -63,7 +63,9 @@ public function index()
                 ]);
 
             if ($validator->fails()) {
-                return response($validator->errors(), 422);
+                return response()->json([
+                    'message' => $validator->errors()->first(),
+                ], 422);
             } else {
                 $event = Event::create(array_merge(
                     $validator->validated()));

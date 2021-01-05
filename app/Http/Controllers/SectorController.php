@@ -76,7 +76,9 @@ class SectorController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response($validator->errors(), 422);
+            return response()->json([
+                'message' => $validator->errors()->first(),
+            ], 422);
         } else {
             $sector = Sector::create(array_merge(
                 $validator->validated()));

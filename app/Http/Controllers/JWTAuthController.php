@@ -72,7 +72,9 @@ class JWTAuthController extends Controller
             ]);
 
             if ($validator->fails()) {
-                return response()->json($validator->errors(), 422);
+                return response()->json([
+                    'message' => $validator->errors()->first(),
+                ], 422);
             } else {
                 $user = User::where('email', '=', $request->email)->first();
                 if ($user === null) {
