@@ -1,5 +1,7 @@
 <?php
 
+App::setLocale('pt');
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
