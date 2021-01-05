@@ -24,10 +24,6 @@ class UserController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-            ], [
-                'image.max' => 'A imagem deve ser menor que 2GB.',
-                'image.mimes' => 'Os formatos aceitos são: jpeg, png e jpg.',
-                'image.image' => 'Só imagens são aceitas.'
             ]);
 
             if ($validator->fails()) {
