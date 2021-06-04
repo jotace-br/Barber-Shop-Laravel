@@ -35,7 +35,7 @@ class JWTAuthController extends Controller
                 'password' => 'required|confirmed|string|min:6',
                 'surname' => 'required|between:2,100',
                 'birth_date' => 'required',
-                'whatsapp' => 'required|between:2,100',
+                'number' => 'required|between:2,100',
             ]);
 
             if ($validator->fails()) {
@@ -81,12 +81,6 @@ class JWTAuthController extends Controller
                     return response()->json([
                         'error' => 'Usuário não existente em nossa plataforma.'
                     ], 404);
-                }
-
-                if ($user->status === 0) {
-                    return response()->json([
-                        'error' => 'Conta desativada. Verifique com o RH.'
-                    ], 401);
                 }
 
                 if (!$token = auth()->attempt($validator->validated())) {

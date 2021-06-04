@@ -23,11 +23,7 @@ class User extends Authenticatable implements JWTSubject
         'password',
         'surname',
         'birth_date',
-        'whatsapp',
-        'image',
-        'fk_user_type',
-        'fk_user_sector',
-        'status',
+        'number',
     ];
 
     /**
@@ -48,14 +44,6 @@ class User extends Authenticatable implements JWTSubject
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-    public function fk_user_sector() {
-        return $this->hasOne('App\Models\Sector', 'id', 'fk_user_sector');
-    }
-
-    public function fk_user_type() {
-        return $this->hasOne('App\Models\UserType', 'id', 'fk_user_type');
-    }
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.

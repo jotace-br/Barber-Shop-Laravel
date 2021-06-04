@@ -7,12 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\JWTAuthController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\SectorController;
 use App\Http\Controllers\UserTypeController;
-use App\Http\Controllers\MeetingController;
-use App\Http\Controllers\PurchaseRequestController;
-use App\Http\Controllers\AnnouncementController;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -47,24 +42,8 @@ Route::group([
     'prefix' => 'user'
 ], function ($router) {
     Route::get('index', [UserController::class, 'index']);
-    Route::get('indexPendences', [UserController::class, 'indexPendences']);
-    Route::get('getEmail/{id}', [UserController::class, 'getEmail']);
-    Route::get('listEmails/{sectorId}', [UserController::class, 'listEmails']);
-    Route::post('uploadImage', [UserController::class, 'uploadImage']);
     Route::put('update/{id}', [UserController::class, 'updateUser']);
     Route::delete('delete/{id}', [UserController::class, 'deleteUser']);
-});
-
-Route::group([
-    'middleware' => 'auth:api',
-    'prefix' => 'sector'
-], function ($router) {
-    Route::get('index', [SectorController::class, 'index']);
-    Route::get('getName/{id}', [SectorController::class, 'getNameById']);
-    Route::get('getCompanies', [SectorController::class, 'getOnlyCompanies']);
-    Route::post('register', [SectorController::class, 'register']);
-    Route::put('update/{id}', [SectorController::class, 'update']);
-    Route::delete('delete/{id}', [SectorController::class, 'delete']);
 });
 
 Route::group(
@@ -75,38 +54,4 @@ Route::group(
     Route::post('register', [UserTypeController::class, 'register']);
     Route::put('update/{id}', [UserTypeController::class, 'update']);
     Route::delete('delete/{id}', [UserTypeController::class, 'delete']);
-});
-
-Route::group(
-    ['middleware' => 'auth:api',
-    'prefix' => 'meeting'
-], function ($router) {
-    Route::get('index', [MeetingController::class, 'index']);
-    Route::get('mySector/{sectorID}', [MeetingController::class, 'getMySector']);
-    Route::post('register', [MeetingController::class, 'register']);
-    Route::put('update/{id}', [MeetingController::class, 'update']);
-    Route::delete('delete/{id}', [MeetingController::class, 'delete']);
-});
-
-Route::group(
-    ['middleware' => 'auth:api',
-    'prefix' => 'purchaseRequest'
-], function ($router) {
-    Route::get('index', [PurchaseRequestController::class, 'index']);
-    Route::post('register', [PurchaseRequestController::class, 'register']);
-    Route::put('update/{id}', [PurchaseRequestController::class, 'update']);
-    Route::delete('delete/{id}', [PurchaseRequestController::class, 'delete']);
-});
-
-Route::group(
-    ['middleware' => 'auth:api',
-    'prefix' => 'announcement'
-], function ($router) {
-    Route::get('index', [AnnouncementController::class, 'index']);
-    Route::get('indexOnlyFive', [AnnouncementController::class, 'indexLastFiveOnes']);
-    Route::get('indexOnlyPublic', [AnnouncementController::class, 'indexPublicAnnouncements']);
-    Route::get('indexByLoggedUserSector', [AnnouncementController::class, 'indexOnlyMySectorAnnouncements']);
-    Route::post('register', [AnnouncementController::class, 'register']);
-    Route::put('update/{id}', [AnnouncementController::class, 'update']);
-    Route::delete('delete/{id}', [AnnouncementController::class, 'delete']);
 });
