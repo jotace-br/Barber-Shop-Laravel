@@ -33,9 +33,7 @@ class JWTAuthController extends Controller
                 'name' => 'required|between:2,100',
                 'email' => 'required|email|unique:users|max:50',
                 'password' => 'required|confirmed|string|min:6',
-                'surname' => 'required|between:2,100',
-                'birth_date' => 'required',
-                'number' => 'required|between:2,100',
+                'phone' => 'required|between:2,100',
             ]);
 
             if ($validator->fails()) {
